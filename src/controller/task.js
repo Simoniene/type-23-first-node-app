@@ -7,14 +7,16 @@ const INSERT_TASK = async (req, res) => {
   try {
     const newTask = {
       id: uuidv4(),
-      title: req.body.title,
-      points: req.body.points,
+      question: req.body.question,
+      // points: req.body.points,
       status: false,
       date: new Date(),
       userId: req.body.userId,
     };
 
-    const isTitleExists = tasks.some((task) => task.title === req.body.title);
+    const isTitleExists = tasks.some(
+      (task) => task.question === req.body.question
+    );
 
     if (isTitleExists) {
       return res.status(409).json({ message: "this task already exist" });

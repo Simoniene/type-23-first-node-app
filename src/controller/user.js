@@ -30,11 +30,14 @@ export const SIGN_IN = async (req, res) => {
 
 export const LOGIN = async (req, res) => {
   try {
+    console.log(req.body);
+
     const user = await UserModel.findOne({ email: req.body.email });
 
     if (!user) {
       return res.status(401).json({ message: "You have provided bad data" });
     }
+    console.log("user", user);
 
     const isPasswordsMatch = bcrypt.compareSync(
       req.body.password,
