@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import AnswerModel from "../model/answer.js";
 
-let answer = [];
-
 const INSERT_ANSWER = async (req, res) => {
   try {
     const newAnswer = {
@@ -13,9 +11,9 @@ const INSERT_ANSWER = async (req, res) => {
       userId: req.body.userId,
     };
 
-    const isAnswerExists = answer.some(
-      (answer) => answer.answer === req.body.answer
-    );
+    const isAnswerExists = await AnswerModel.findOne({
+      answer: req.body.answer,
+    });
 
     if (isAnswerExists) {
       return res.status(409).json({ message: "this answer already exist" });
@@ -36,7 +34,7 @@ const INSERT_ANSWER = async (req, res) => {
 
 const GET_ALL_ANSWERS = async (req, res) => {
   try {
-    const tasks = await TaskModel.find({ userId: req.body.userId });
+    const answer = await AnswerModel.find({ userId: req.body.userId });
     return res.status(200).json({ answer: answer });
   } catch (err) {
     console.log(err);
@@ -69,7 +67,7 @@ const GET_ANSWER_BY_ID = async (req, res) => {
 
 const UPDATE_ANSWER_BY_ID = async (req, res) => {
   try {
-    const task = await AnswerModel.findOne({ id: req.params.id });
+    const answer = await AnswerModel.findOne({ id: req.params.id });
 
     if (answer.userId !== req.body.userId) {
       return res
@@ -112,7 +110,7 @@ const DELETE_ANSWER_BY_ID = async (req, res) => {
 
     return res
       .status(200)
-      .json({ response: "ANSWER was deleted", answer: response });
+      .json({ response: "Answer was deleted", answer: response });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "we have some problems" });

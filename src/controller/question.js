@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import QuestionModel from "../model/question.js";
 
-let question = [];
-
 const INSERT_QUESTION = async (req, res) => {
   try {
     const newQuestion = {
@@ -13,9 +11,9 @@ const INSERT_QUESTION = async (req, res) => {
       userId: req.body.userId,
     };
 
-    const isQuestionExists = questions.some(
-      (question) => questionk.question === req.body.question
-    );
+    const isQuestionExists = await QuestionModel.findOne({
+      question: req.body.question,
+    });
 
     if (isQuestionExists) {
       return res.status(409).json({ message: "this question already exist" });
@@ -47,7 +45,7 @@ const GET_ALL_QUESTIONS = async (req, res) => {
 
 const GET_QUESTION_BY_ID = async (req, res) => {
   try {
-    const question = await questionModel.findOne({ id: req.params.id });
+    const question = await QuestionModel.findOne({ id: req.params.id });
 
     if (question.userId !== req.body.userId) {
       return res
