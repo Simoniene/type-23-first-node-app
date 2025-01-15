@@ -3,7 +3,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import "dotenv/config";
 import userRouter from "./src/route/user.js";
-import taskRouter from "./src/route/task.js";
+import answerRouter from "./src/route/answer.js";
+import questionRouter from "./src/route/question.js";
+
 const app = express();
 
 app.use(cors());
@@ -18,7 +20,8 @@ mongoose
   });
 
 app.use(userRouter);
-app.use(taskRouter);
+app.use(answerRouter);
+app.use(questionRouter);
 
 app.use((req, res) => {
   res.status(404).json({ response: "your endpoint does not exit" });
